@@ -21,6 +21,11 @@ type (
 	}
 )
 
-func (m Metric) AsString() string {
+func (m Metric) String() string {
 	return fmt.Sprintf("%s|%f|%s", m.Type, m.Datum, m.Qualifier)
 }
+
+func (m Metadata) String() string {
+	return fmt.Sprintf("%s|%s", m.Type, m.Data)
+}
+
