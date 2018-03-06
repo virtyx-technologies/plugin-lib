@@ -12,6 +12,7 @@ type (
 	Metadata struct {
 		Type string `json:"type"`
 		Data string `json:"data"`
+		Qualifier string  `json:"qualifier"`
 	}
 
 	GenericResponse struct {
@@ -26,6 +27,6 @@ func (m Metric) String() string {
 }
 
 func (m Metadata) String() string {
-	return fmt.Sprintf("%s|%s", m.Type, m.Data)
+	return fmt.Sprintf("%s|%s|%s", m.Type, m.Data, m.Qualifier)
 }
 
