@@ -1,6 +1,9 @@
 package plugin_lib
 
-import "fmt"
+import (
+	"fmt"
+	"bytes"
+)
 
 type (
 	Metric struct {
@@ -27,5 +30,21 @@ func (m Metric) String() string {
 
 func (m Metadata) String() string {
 	return fmt.Sprintf("%s|%s|%s", m.Type, m.Data)
+}
+
+func (g GenericResponse) Report() string {
+	var buffer bytes.Buffer
+
+	buffer.WriteString(fmt.Sprintf("Error: %s\n", g.Error))
+	buffer.WriteString(fmt.Sprintf("Metrics: %d\n", len(g.Metrics)))
+	for _, m := range g.Metrics {
+		buffer.WriteString(fmt.Sprintf("\t%s %f %s\n", m.Type, m.Datum, m.Qualifier))
+	}
+	buffer.WriteString(fmt.Sprintf("Metadata: %d\n", len(g.Metadata)))
+	for _, m := range g.Metadata {
+		buffer.WriteString(fmt.Sprintf("\t%s %s\n", m.Type, m.Data))
+	}
+
+	return buffer.String()
 }
 
