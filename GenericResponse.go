@@ -24,15 +24,15 @@ type (
 	}
 )
 
-func (m Metric) String() string {
-	return fmt.Sprintf("%s|%f|%s", m.Type, m.Datum, m.Qualifier)
+func (g *GenericResponse) AddMetric(m Metric) {
+	g.Metrics = append(g.Metrics, m)
 }
 
-func (m Metadata) String() string {
-	return fmt.Sprintf("%s|%s|%s", m.Type, m.Data)
+func (g *GenericResponse) AddMetadata(m Metadata) {
+	g.Metadata = append(g.Metadata, m)
 }
 
-func (g GenericResponse) Report() string {
+func (g *GenericResponse) Report() string {
 	var buffer bytes.Buffer
 
 	buffer.WriteString(fmt.Sprintf("Error: %s\n", g.Error))
@@ -46,5 +46,13 @@ func (g GenericResponse) Report() string {
 	}
 
 	return buffer.String()
+}
+
+func (m Metric) String() string {
+	return fmt.Sprintf("%s|%f|%s", m.Type, m.Datum, m.Qualifier)
+}
+
+func (m Metadata) String() string {
+	return fmt.Sprintf("%s|%s|%s", m.Type, m.Data)
 }
 
