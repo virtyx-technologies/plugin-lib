@@ -1,2 +1,2 @@
 # plugin-lib
-Shared code for agent plugins
+A library of structures and methods for use by plugins of the Virtyx Agent

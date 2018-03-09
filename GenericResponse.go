@@ -6,32 +6,40 @@ import (
 )
 
 type (
-	Metric struct {
-		Type      string  `json:"type"`
-		Datum     float64 `json:"datum"`
-		Qualifier string  `json:"qualifier"`
-	}
-
-	Metadata struct {
-		Type string `json:"type"`
-		Data string `json:"data"`
-	}
-
+	// The struct returned to the agent by a plugin,
+	// containing all metrics and metadata and the
+	// text of any error which may have occurred
 	GenericResponse struct {
 		Error    string     `json:"error"`
 		Metrics  []Metric   `json:"metrics"`
 		Metadata []Metadata `json:"metadata"`
 	}
+
+	// Encapsulates a metric captured by a plugin
+	Metric struct {
+		Type      string  `json:"type"`      // The metric type as a Virtyx Resource Name (vrn)
+		Datum     float64 `json:"datum"`     // The value captured
+		Qualifier string  `json:"qualifier"` // Optional string to qualify the source of the metric
+	}
+
+	// Encapsulates metadata (textual information) captured by a plugin
+	Metadata struct {
+		Type string `json:"type"`            // The metadata type as a Virtyx Resource Name (vrn)
+		Data string `json:"data"`            // The value captured
+	}
 )
 
+// Add a metric to the response
 func (g *GenericResponse) AddMetric(m Metric) {
 	g.Metrics = append(g.Metrics, m)
 }
 
+// Add metadata to the response
 func (g *GenericResponse) AddMetadata(m Metadata) {
 	g.Metadata = append(g.Metadata, m)
 }
 
+// Format the response as a human-readable string
 func (g *GenericResponse) Report() string {
 	var buffer bytes.Buffer
 
@@ -55,4 +63,3 @@ func (m Metric) String() string {
 func (m Metadata) String() string {
 	return fmt.Sprintf("%s|%s|%s", m.Type, m.Data)
 }
-
