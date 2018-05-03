@@ -40,3 +40,37 @@ func TestReport(t *testing.T) {
 	s := g.Report()
 	a.NotEmpty(s)
 }
+
+func TestFindMetric(t *testing.T) {
+	a := assert.New(t)
+	g := GenericResponse{}
+
+	a.Equal(0, len(g.Metrics))
+	metric1 := Metric{Type: "vrn:metric:one", Datum: 0, Qualifier: "unqualified"}
+	g.AddMetric(metric1)
+	metric2 := Metric{Type: "vrn:metric:two", Datum: 0, Qualifier: "unqualified"}
+	g.AddMetric(metric2)
+	actual, err := g.FindMetric("vrn:metric:two")
+	a.Nil(err)
+	a.Equal(metric2, *actual)
+	actual, err = g.FindMetric("vrn:metric:three")
+	a.NotNil(err)
+	a.Nil(actual)
+}
+
+func TestFindMetadata(t *testing.T) {
+	a := assert.New(t)
+	g := GenericResponse{}
+
+	metric1 := Metadata{Type: "vrn:metric:one", Data: "321" }
+	g.AddMetadata(metric1)
+	metric2 := Metadata{Type: "vrn:metric:two", Data: "xyzzy"}
+	g.AddMetadata(metric2)
+	actual, err := g.FindMetadata("vrn:metric:two")
+	a.Nil(err)
+	a.Equal(metric2, *actual)
+	actual, err = g.FindMetadata("vrn:metric:three")
+	a.NotNil(err)
+	a.Nil(actual)
+}
+

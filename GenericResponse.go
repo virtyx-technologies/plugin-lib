@@ -3,6 +3,7 @@ package plugin_lib
 import (
 	"bytes"
 	"fmt"
+	"errors"
 )
 
 type (
@@ -39,6 +40,26 @@ func (g *GenericResponse) AddMetadata(m Metadata) {
 	g.Metadata = append(g.Metadata, m)
 }
 
+// Find a metric given its VRN (type)
+func (g *GenericResponse) FindMetric(vrn string) (*Metric, error) {
+	for _, m := range g.Metrics {
+		if m.Type == vrn {
+			return &m, nil
+		}
+	}
+	return nil, errors.New("not found")
+}
+
+// Find a metadata given its VRN (type)
+func (g *GenericResponse) FindMetadata(vrn string) (*Metadata, error) {
+	for _, m := range g.Metadata {
+		if m.Type == vrn {
+			return &m, nil
+		}
+	}
+	return nil, errors.New("not found")
+}
+
 // Format the response as a human-readable string
 func (g *GenericResponse) Report() string {
 	var buffer bytes.Buffer
@@ -63,3 +84,4 @@ func (m Metric) String() string {
 func (m Metadata) String() string {
 	return fmt.Sprintf("%s|%s", m.Type, m.Data)
 }
+
