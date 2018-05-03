@@ -1,8 +1,8 @@
 package plugin_lib
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 )
 
 type (
@@ -24,8 +24,8 @@ type (
 
 	// Encapsulates metadata (textual information) captured by a plugin
 	Metadata struct {
-		Type string `json:"type"`            // The metadata type as a Virtyx Resource Name (vrn)
-		Data string `json:"data"`            // The value captured
+		Type string `json:"type"` // The metadata type as a Virtyx Resource Name (vrn)
+		Data string `json:"data"` // The value captured
 	}
 )
 
@@ -61,5 +61,5 @@ func (m Metric) String() string {
 }
 
 func (m Metadata) String() string {
-	return fmt.Sprintf("%s|%s|%s", m.Type, m.Data)
+	return fmt.Sprintf("%s|%s", m.Type, m.Data)
 }

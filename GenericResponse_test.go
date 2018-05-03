@@ -2,6 +2,7 @@ package plugin_lib
 
 import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -39,4 +40,3 @@ func TestReport(t *testing.T) {
 	s := g.Report()
 	a.NotEmpty(s)
 }
-
