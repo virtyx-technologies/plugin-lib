@@ -1,8 +1,9 @@
 package plugin_lib
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
+	"errors"
 )
 
 type (
@@ -24,8 +25,8 @@ type (
 
 	// Encapsulates metadata (textual information) captured by a plugin
 	Metadata struct {
-		Type string `json:"type"`            // The metadata type as a Virtyx Resource Name (vrn)
-		Data string `json:"data"`            // The value captured
+		Type string `json:"type"` // The metadata type as a Virtyx Resource Name (vrn)
+		Data string `json:"data"` // The value captured
 	}
 )
 
@@ -37,6 +38,26 @@ func (g *GenericResponse) AddMetric(m Metric) {
 // Add metadata to the response
 func (g *GenericResponse) AddMetadata(m Metadata) {
 	g.Metadata = append(g.Metadata, m)
+}
+
+// Find a metric given its VRN (type)
+func (g *GenericResponse) FindMetric(vrn string) (*Metric, error) {
+	for _, m := range g.Metrics {
+		if m.Type == vrn {
+			return &m, nil
+		}
+	}
+	return nil, errors.New("not found")
+}
+
+// Find a metadata given its VRN (type)
+func (g *GenericResponse) FindMetadata(vrn string) (*Metadata, error) {
+	for _, m := range g.Metadata {
+		if m.Type == vrn {
+			return &m, nil
+		}
+	}
+	return nil, errors.New("not found")
 }
 
 // Format the response as a human-readable string
@@ -61,5 +82,6 @@ func (m Metric) String() string {
 }
 
 func (m Metadata) String() string {
-	return fmt.Sprintf("%s|%s|%s", m.Type, m.Data)
+	return fmt.Sprintf("%s|%s", m.Type, m.Data)
 }
+
